@@ -8,8 +8,8 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "em_clean": "cd src/utilities && make clean",
-    "em_build": "cd src/utilities && make"
+    "em_clean": "cd cpp && make clean",
+    "em_build": "cd cpp && make"
   },
   "dependencies": {
     "react": "^18.3.1",
