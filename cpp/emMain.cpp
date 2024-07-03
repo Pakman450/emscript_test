@@ -24,6 +24,18 @@ int getMolInt() {
 }
 
 
+std::string readFile(const std::string& content){
+
+
+    return "readFile";
+}
+
+Mol returnObj(){
+
+    return returnMolObj();
+}
+
+
 
 EMSCRIPTEN_BINDINGS(my_module) {
     
@@ -33,6 +45,16 @@ EMSCRIPTEN_BINDINGS(my_module) {
     emscripten::function("getMolInt", &getMolInt);
 
     
+    emscripten::function("returnObj", &returnObj);
+
+    
     // You have to register the std::vector that contains a vector of integers
     emscripten::register_vector<int>("vector<int>");
+
+    // Mol class
+    emscripten::class_<Mol>("Mol")
+        .constructor<int,int>()
+        .property("num_atoms",&Mol::num_atoms)
+        .property("num_bonds",&Mol::num_bonds);
+
 }

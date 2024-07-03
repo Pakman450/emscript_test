@@ -3,12 +3,20 @@
 #include <string>
 
 
-std::string returnMolString();
-int returnMolInt();
+
 
 class           Mol {
     public:
         unsigned int            num_atoms;
         unsigned int            num_bonds;
+
+
+    Mol(unsigned int , unsigned int);
 };
+
+std::string returnMolString();
+int returnMolInt();
+Mol returnMolObj();
+
+
 #endif

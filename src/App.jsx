@@ -26,9 +26,19 @@ function App() {
     console.log(window.Module.getMolInt())
   },[])
 
-  const printFile = (e)=>{
+  const readFile = (e)=>{
     console.log(e.target.name)
     console.log(e.target.files[0])
+
+    var instance = new Module.Mol(10, 4);
+
+    console.log(instance.num_atoms);
+
+    var instanceObj = window.Module.returnObj();
+
+    console.log(instanceObj.num_atoms);
+
+
 
   }
 
@@ -40,7 +50,7 @@ function App() {
       
       ">
         <input 
-          onChange={printFile}
+          onChange={readFile}
           name='inputFile'
           type="file" 
           className="file-input file-input-bordered w-full max-w-xs" 
