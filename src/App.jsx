@@ -1,10 +1,19 @@
 import { useEffect, useState } from 'react'
 
+function readAsyncFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
 
+    reader.onload = res => {
+      resolve(res.target.result);
+    };
+    reader.onerror = err => reject(err);
+
+    reader.readAsArrayBuffer(file);
+  });
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [File, setFile] = useState(null);
 
   useEffect(()=>{
 
@@ -26,20 +35,21 @@ function App() {
     console.log(window.Module.getMolInt())
   },[])
 
-  const readFile = (e)=>{
-    console.log(e.target.name)
-    console.log(e.target.files[0])
+  const loadFile = async (e)=>{
 
-    var instance = new Module.Mol(10, 4);
-
-    console.log(instance.num_atoms);
-
-    var instanceObj = window.Module.returnObj();
-
-    console.log(instanceObj.num_atoms);
+    Module.readFile(await readAsyncFile(e.target.files[0]))
 
 
+    // Module.readFile(FileContent)
+    // // var instance = new Module.Mol(10, 4);
 
+    // // console.log(instance.num_atoms);
+
+    // // var instanceObj = window.Module.returnObj();
+
+    // // console.log(instanceObj.num_atoms);
+    // console.log(FileContent)
+    
   }
 
   return (
@@ -50,7 +60,7 @@ function App() {
       
       ">
         <input 
-          onChange={readFile}
+          onChange={loadFile}
           name='inputFile'
           type="file" 
           className="file-input file-input-bordered w-full max-w-xs" 

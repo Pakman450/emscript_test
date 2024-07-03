@@ -1,6 +1,11 @@
 #include <emscripten/bind.h>
 #include <vector>
 #include <string>
+#include <iostream>
+
+
+#include <sstream>
+
 #include "readMol2.h"
 #include "Mol.h"
 
@@ -24,10 +29,14 @@ int getMolInt() {
 }
 
 
-std::string readFile(const std::string& content){
+void readFile(const std::string& content){
+    std::istringstream stream(content);
+    std::string line; 
 
+    while(std::getline(stream, line)){
+        std::cout << "Processing: " << line << std::endl;
+    };
 
-    return "readFile";
 }
 
 Mol returnObj(){
@@ -44,7 +53,8 @@ EMSCRIPTEN_BINDINGS(my_module) {
     emscripten::function("getMolStr", &getMolStr);
     emscripten::function("getMolInt", &getMolInt);
 
-    
+    emscripten::function("readFile", &readFile);
+
     emscripten::function("returnObj", &returnObj);
 
     
