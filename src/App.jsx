@@ -15,6 +15,7 @@ function readAsyncFile(file) {
 
 function App() {
 
+
   useEffect(()=>{
 
     // call method from utilities
@@ -40,15 +41,15 @@ function App() {
     Module.readFile(await readAsyncFile(e.target.files[0]))
 
 
-    // Module.readFile(FileContent)
-    // // var instance = new Module.Mol(10, 4);
+    Module.readFile(FileContent)
+    var instance = new Module.Mol(10, 4);
 
-    // // console.log(instance.num_atoms);
+    console.log(instance.num_atoms);
 
-    // // var instanceObj = window.Module.returnObj();
+    var instanceObj = window.Module.returnObj();
 
-    // // console.log(instanceObj.num_atoms);
-    // console.log(FileContent)
+    console.log(instanceObj.num_atoms);
+    console.log(FileContent)
     
   }
 
