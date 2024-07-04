@@ -4,7 +4,7 @@ SRCS = emMain.cpp readMol2.cpp Mol.cpp
 # List of object files
 OBJS = $(SRCS:.cpp=.o)
 # Output JavaScript file
-OUT = output.js
+OUT = output.mjs
 OUTWASM = output.wasm
 
 # Compiler and flags

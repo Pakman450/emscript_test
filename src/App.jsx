@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 
+// import the cpp code
+import Module from '/src/cpp/output.mjs';
+
 function readAsyncFile(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -14,42 +17,47 @@ function readAsyncFile(file) {
 }
 
 function App() {
+  let myModule;
+  useEffect( ()=>{
 
+    async function getModule() {
 
-  useEffect(()=>{
+      myModule =  await Module();
 
-    // call method from utilities
-    let vec = window.Module.getVector();
-
-    // Convert to a JavaScript array
-    let jsArray = [];
-    for (let i = 0; i < vec.size(); i++) {
-        jsArray.push(vec.get(i));
-    }
+      let vec = myModule.getVector();
+      // console.log(vec)
+      // Convert to a JavaScript array
+      let jsArray = [];
+      for (let i = 0; i < vec.size(); i++) {
+          jsArray.push(vec.get(i));
+      }
+    
   
+      console.log(jsArray);
+      console.log("jsArray");
 
-    console.log(jsArray);
+      console.log(myModule.getStr())
+      console.log(myModule.getMolStr())
 
-    console.log(window.Module.getStr())
-    console.log(window.Module.getMolStr())
+      console.log(myModule.getMolInt())
+    }
+    getModule()
 
-    console.log(window.Module.getMolInt())
+
   },[])
 
   const loadFile = async (e)=>{
 
-    Module.readFile(await readAsyncFile(e.target.files[0]))
+    myModule.readFile(await readAsyncFile(e.target.files[0]))
 
 
-    Module.readFile(FileContent)
-    var instance = new Module.Mol(10, 4);
+    var instance = new myModule.Mol(10, 4);
 
     console.log(instance.num_atoms);
 
-    var instanceObj = window.Module.returnObj();
+    var instanceObj = myModule.returnObj();
 
     console.log(instanceObj.num_atoms);
-    console.log(FileContent)
     
   }
 
