@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from 'react'
 
 // import the cpp code
 import emRawModule from '/src/cpp/output.mjs'
-// import triangle from '/src/cpp/opengl/triangle_minimal.mjs'
 
 function readAsyncFile(file) {
   return new Promise((resolve, reject) => {
@@ -19,7 +18,6 @@ function readAsyncFile(file) {
 
 function App() {
   const [emModule, setEmModule] = useState(null)
-  const canvasRef = useRef(null);
 
   useEffect( ()=>{
 
@@ -29,22 +27,6 @@ function App() {
     }
     )()
 
-    const loadModule = async () => {
-      const Module = await import('/src/cpp/opengl/main.mjs');
-      Module.default({
-        onRuntimeInitialized: () => {
-          const canvas = canvasRef.current;
-          const GL = Module.GL.createContext(canvas, {
-            antialias: true,
-            preserveDrawingBuffer: true,
-          });
-          Module.GL.makeContextCurrent(GL);
-          Module.render();
-        }
-      });
-    };
-
-    loadModule();
   },[])
 
   
@@ -73,7 +55,6 @@ function App() {
         />
        
       </form>
-      <canvas ref={canvasRef}  width="800" height="600"/>
     </div>
     </>
   )
