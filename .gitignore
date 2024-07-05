@@ -26,5 +26,5 @@ dist-ssr
 *.o
 
 # don't bring in wasm or js
-cpp/*.js
-cpp/*.wasm
+src/cpp/*.mjs
+src/cpp/*.wasm

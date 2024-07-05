@@ -3,6 +3,9 @@
 #include <string>
 #include <iostream>
 
+// Open GL
+#include <GLES2/gl2.h>
+
 
 #include <sstream>
 
@@ -44,7 +47,10 @@ Mol returnObj(){
     return returnMolObj();
 }
 
-
+void render() {
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
 
 EMSCRIPTEN_BINDINGS(my_module) {
     
@@ -57,7 +63,8 @@ EMSCRIPTEN_BINDINGS(my_module) {
 
     emscripten::function("returnObj", &returnObj);
 
-    
+    emscripten::function("render", &render);
+
     // You have to register the std::vector that contains a vector of integers
     emscripten::register_vector<int>("vector<int>");
 

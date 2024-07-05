@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 // import the cpp code
-import Module from '/src/cpp/output.mjs';
+import emRawModule from '/src/cpp/output.mjs'
+// import triangle from '/src/cpp/opengl/triangle_minimal.mjs'
 
 function readAsyncFile(file) {
   return new Promise((resolve, reject) => {
@@ -17,48 +18,44 @@ function readAsyncFile(file) {
 }
 
 function App() {
-  let myModule;
+  const [emModule, setEmModule] = useState(null)
+  const canvasRef = useRef(null);
+
   useEffect( ()=>{
 
-    async function getModule() {
+    (async function () {
 
-      myModule =  await Module();
-
-      let vec = myModule.getVector();
-      // console.log(vec)
-      // Convert to a JavaScript array
-      let jsArray = [];
-      for (let i = 0; i < vec.size(); i++) {
-          jsArray.push(vec.get(i));
-      }
-    
-  
-      console.log(jsArray);
-      console.log("jsArray");
-
-      console.log(myModule.getStr())
-      console.log(myModule.getMolStr())
-
-      console.log(myModule.getMolInt())
+      setEmModule(await emRawModule())
     }
-    getModule()
+    )()
 
+    const loadModule = async () => {
+      const Module = await import('/src/cpp/opengl/main.mjs');
+      Module.default({
+        onRuntimeInitialized: () => {
+          const canvas = canvasRef.current;
+          const GL = Module.GL.createContext(canvas, {
+            antialias: true,
+            preserveDrawingBuffer: true,
+          });
+          Module.GL.makeContextCurrent(GL);
+          Module.render();
+        }
+      });
+    };
 
+    loadModule();
   },[])
 
+  
+
   const loadFile = async (e)=>{
+    emModule.readFile(await readAsyncFile(e.target.files[0]))
+    // var instance = new emModule.Mol(10, 4);
+    // console.log(instance.num_atoms);
+    // var instanceObj = emModule.returnObj();
+    // console.log(instanceObj.num_atoms);
 
-    myModule.readFile(await readAsyncFile(e.target.files[0]))
-
-
-    var instance = new myModule.Mol(10, 4);
-
-    console.log(instance.num_atoms);
-
-    var instanceObj = myModule.returnObj();
-
-    console.log(instanceObj.num_atoms);
-    
   }
 
   return (
@@ -74,9 +71,9 @@ function App() {
           type="file" 
           className="file-input file-input-bordered w-full max-w-xs" 
         />
+       
       </form>
-      
-
+      <canvas ref={canvasRef}  width="800" height="600"/>
     </div>
     </>
   )
